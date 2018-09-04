@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Paralax</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<style>
+		@import url('https://fonts.googleapis.com/css?family=Ubuntu');
+
+		html {
+			font-family: 'Ubuntu', sans-serif;
+			color: white;
+		}
+
+		#scroller {
+			width: 500px;
+			height: 300px;
+		}
+
+		.paralax {
+			height: 400px;
+			background-position: center;
+			background-size: cover;
+			padding: 2em;
+			box-sizing: border-box;
+			font-size: 1.5em;
+			line-height: 1.5em;
+		}
+		.paralax:nth-child(1) {
+			background-image: url('images/image-1-x2.png');
+		}
+
+		.paralax:nth-child(2) {
+			background-image: url('images/image-2-x2.png');
+		}
+
+		.paralax:nth-child(3) {
+			background-image: url('images/image-3-x2.png');
+		}
+
+		.paralax:nth-child(4) {
+			background-image: url('images/image-4-x2.png');
+		}
+	</style>
+</head>
+<body>
+	<div class="paralax">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Perferendis, placeat reprehenderit labore provident incidunt velit! Perspiciatis in nostrum earum quis ea maxime ratione iure. Quae voluptates minima eveniet eaque laudantium!</div>
+	<div class="paralax">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quaerat eum, similique magnam praesentium, reiciendis corrupti, architecto illo placeat numquam mollitia veniam dolore harum dolorem quos provident repellat sequi. Dolore, deleniti.</div>
+	<div class="paralax">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Incidunt cumque, voluptates aspernatur voluptas laboriosam, fugit nam itaque quidem cupiditate molestias nesciunt, obcaecati placeat expedita perferendis minima optio illum dolores nulla.</div>
+	<div class="paralax">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquid eos vero velit sequi expedita quibusdam eius eveniet reprehenderit nobis dolores magnam, ipsa culpa debitis, corporis labore odio impedit cumque? Ex.</div>
+	<script type="module">
+		import Paralax from '../scr/paralax.js'
+
+		const options = {
+			speed: 1.5,
+		}
+
+		const paralax = new Paralax()
+		paralax.initalise()
+	</script>
+</body>
+</html>
