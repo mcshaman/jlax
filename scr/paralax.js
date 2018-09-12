@@ -4,112 +4,139 @@ const DEFAULT_OPTIONS = {
 	speed: 1,
 }
 
+function scrollHandler() {
+	requestAnimationFrame(this._render.bind(this))
+}
+
+function loadHandler(pEvent) {
+	pEvent.target.removeEventListener('load', this._loadHandler)
+
+	this._initaliseItem(this._items.find(pItem => pItem.image === pEvent.target))
+}
+
 export default class Paralax {
 	constructor(pOptions) {
-		const t = this
 		const options = Object.assign({}, DEFAULT_OPTIONS, pOptions)
 
 		if (options.viewPort === document) {
 			options.viewPort = window
 		}
 
-		t._viewPort = options.viewPort
-		t._viewPortScroll = null
-		t._viewPortHeight = null
-		t._className = options.className
-		t._speed = options.speed
-		t._elements = []
-		t._scrollHandler = () => {
-			requestAnimationFrame(() => t._render())
+		this._viewPort = options.viewPort
+		this._viewPortHeight = null
+		this._className = options.className
+		this._speed = options.speed
+		this._items = []
+		this._scrollHandler = scrollHandler.bind(this)
+		this._loadHandler = loadHandler.bind(this)
+	}
+
+	_initaliseItem(pItem) {
+		const {element, image} = pItem
+		const elementWidth = element.clientWidth
+		const elementHeight = element.clientHeight
+		
+		pItem.coverHeight = Math.max(this._viewPortHeight, elementHeight) * this._speed
+
+		const coverRatio = elementWidth / pItem.coverHeight
+		const imageRatio = image.width / image.height
+
+		const backgroundHeight = coverRatio > imageRatio ? coverRatio / imageRatio * pItem.coverHeight : pItem.coverHeight
+		
+		element.style.backgroundSize = `auto ${backgroundHeight}px`
+
+		const elementTop = element.offsetTop
+		pItem.scrollEntry = elementTop + this._viewPortHeight
+		pItem.scrollExit = elementTop - element.clientHeight
+		pItem.ready = true
+
+		requestAnimationFrame(this._render.bind(this))
+	}
+
+	_getViewPortScroll() {
+		const viewPort = this._viewPort
+		if (viewPort === window) {
+			const element = document.documentElement
+			return (window.pageYOffset || element.scrollTop) - (element.clientTop || 0)
 		}
-		t._loadHandler = (pEvent) => {
-			pEvent.target.removeEventListener(t._loadHandler)
 
-			const elementHeight = pElement.clientHeight
-			let height = viewPortHeight > elementHeight ? viewPortHeight : elementHeight
-
-			pElement.style.backgroundSize = `auto ${height * t._speed}px`
-
-			requestAnimationFrame(render)
-		}
+		return viewPort.scrollTop
 	}
 
 	_render() {
-		const t = this
+		const viewPortScroll = this._getViewPortScroll()
+		const viewPortHeight = this._viewPortHeight
 
-		t._elements.forEach(pElement => {
-			const elementHalf = pElement.clientHeight / 2
-			const elementCentre = pElement.offsetTop + elementHalf
+		this._items.forEach(pItem => {
+			if (!pItem.ready || pItem.scrollEntry < viewPortScroll || pItem.scrollExit > viewPortScroll) {
+				return
+			}
+
+			const elementHalf = pItem.element.clientHeight / 2
+			const elementCentre = pItem.element.offsetTop + elementHalf
 	
-			const intersectRangeTop = t._viewPortScroll - elementHalf
-			const intersectRangeHeight = t._viewPortHeight + pElement.clientHeight
+			const intersectRangeTop = viewPortScroll - elementHalf
+			const intersectRangeHeight = viewPortHeight + pItem.element.clientHeight
 
 			const elementCentreNormalised = elementCentre - intersectRangeTop
 			const intersectRatio = (intersectRangeHeight - elementCentreNormalised) / intersectRangeHeight
-	
-			const backgroundImageHeight = parseFloat(pElement.style.backgroundSize.split(' ')[1])
 
-			const heightDifference = backgroundImageHeight - t._viewPortHeight
+			const heightDifference = pItem.coverHeight - viewPortHeight
 				
-			const backgroundOffsetNormalised = intersectRangeHeight * intersectRatio - backgroundImageHeight
+			const backgroundOffsetNormalised = intersectRangeHeight * intersectRatio - pItem.coverHeight
 				
 			const difRatio = heightDifference * intersectRatio
-	
-			pElement.style.backgroundPositionY = `${backgroundOffsetNormalised + difRatio}px`
+
+			pItem.element.style.backgroundPositionY = `${backgroundOffsetNormalised + difRatio}px`
 		})
 	}
 
 	initalise() {
-		const t = this
-		const viewPort = t._viewPort
+		const viewPort = this._viewPort
 
-		if (t._viewPort === window) {
-			const element = document.documentElement
-			t._viewPortScroll = (window.pageYOffset || element.scrollTop) - (element.clientTop || 0)
-			t._viewPortHeight = window.innerHeight
+		viewPort.addEventListener('scroll', this._scrollHandler)
+
+		if (this._viewPort === window) {
+			this._viewPortHeight = window.innerHeight
 		} else {
-			t._viewPortScroll = viewPort.scrollTop
-			t._viewPortHeight = viewPort.clientHeight
-		}
+			this._viewPortHeight = viewPort.clientHeight
 
-		t._elements = [...document.getElementsByClassName(t._className)].map(pElement => {
-			const backgroundImage = getComputedStyle(pElement).backgroundImage
-			const image = new Image()
-			image.src = backgroundImage.replace(/url\(['"]?(.*?)['"]?\)/, '$1')
-			image.addEventListener('load', t._loadHandler)
-
-			return {
-				element: pElement,
-				image
-			}
-		})
-
-		viewPort.addEventListener('scroll', t._scrollHandler)
-
-		if (viewPort !== window) {
 			viewPort.style.overflow = 'scroll'
 			viewPort.style.position = 'relative'
 		}
 
-		t._render()
+		const loadHandler = this._loadHandler
+		this._items = [...document.getElementsByClassName(this._className)].map(pElement => {
+			const backgroundImage = getComputedStyle(pElement).backgroundImage
+
+			const image = new Image()
+			image.src = backgroundImage.replace(/url\(['"]?(.*?)['"]?\)/, '$1')
+			image.addEventListener('load', loadHandler)
+
+			return {
+				element: pElement,
+				ready: false,
+				image,
+				coverHeight: null,
+			}
+		})
 	}
 
 	deinitialise() {
-		const t = this
-
-		const viewPort = t._viewPort
+		const viewPort = this._viewPort
 
 		if (viewPort !== document) {
 			viewPort.style.position = ''
 			viewPort.style.overflow = ''
 		}
 
-		t._viewPort.removeEventListener('scroll', t._scrollHandler)
+		this._viewPort.removeEventListener('scroll', this._scrollHandler)
 
-		t._elements.forEach(pElement => {
-			pElement.style.backgroundSize = ''
-			pElement.style.backgroundPositionY = ''
+		this._items.forEach(pItem => {
+			pItem.style.backgroundSize = ''
+			pItem.style.backgroundPositionY = ''
 		})
-		t._elements = []
+
+		this._items = []
 	}
 }
