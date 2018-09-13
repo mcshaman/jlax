@@ -37,9 +37,14 @@ export default class Paralax {
 		const coverRatio = elementWidth / pItem.coverHeight
 		const imageRatio = image.width / image.height
 
-		const backgroundHeight = coverRatio > imageRatio ? coverRatio / imageRatio * pItem.coverHeight : pItem.coverHeight
 		
-		element.style.backgroundSize = `auto ${backgroundHeight}px`
+		if (coverRatio > imageRatio) {
+			element.style.backgroundSize = 'cover'
+		} else {
+			element.style.backgroundSize = `auto ${pItem.coverHeight}px`
+		}
+		
+		
 
 		const elementTop = element.offsetTop
 		pItem.scrollEntry = elementTop - this._viewPortHeight
