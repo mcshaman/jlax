@@ -46,8 +46,8 @@ export default class Paralax {
 		element.style.backgroundSize = `auto ${backgroundHeight}px`
 
 		const elementTop = element.offsetTop
-		pItem.scrollEntry = elementTop + this._viewPortHeight
-		pItem.scrollExit = elementTop - element.clientHeight
+		pItem.scrollEntry = elementTop - this._viewPortHeight
+		pItem.scrollExit = elementTop + element.clientHeight
 		pItem.ready = true
 
 		requestAnimationFrame(this._render.bind(this))
@@ -68,7 +68,7 @@ export default class Paralax {
 		const viewPortHeight = this._viewPortHeight
 
 		this._items.forEach(pItem => {
-			if (!pItem.ready || pItem.scrollEntry < viewPortScroll || pItem.scrollExit > viewPortScroll) {
+			if (!pItem.ready || pItem.scrollEntry >= viewPortScroll || pItem.scrollExit <= viewPortScroll) {
 				return
 			}
 
