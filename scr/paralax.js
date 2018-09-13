@@ -4,16 +4,6 @@ const DEFAULT_OPTIONS = {
 	speed: 1,
 }
 
-function scrollHandler() {
-	requestAnimationFrame(this._render.bind(this))
-}
-
-function loadHandler(pEvent) {
-	pEvent.target.removeEventListener('load', this._loadHandler)
-
-	this._initaliseItem(this._items.find(pItem => pItem.image === pEvent.target))
-}
-
 export default class Paralax {
 	constructor(pOptions) {
 		const options = Object.assign({}, DEFAULT_OPTIONS, pOptions)
@@ -27,8 +17,14 @@ export default class Paralax {
 		this._className = options.className
 		this._speed = options.speed
 		this._items = []
-		this._scrollHandler = scrollHandler.bind(this)
-		this._loadHandler = loadHandler.bind(this)
+		this._scrollHandler = () => {
+			requestAnimationFrame(this._render.bind(this))
+		}
+		this._loadHandler = (pEvent) => {
+			pEvent.target.removeEventListener('load', this._loadHandler)
+		
+			this._initaliseItem(this._items.find(pItem => pItem.image === pEvent.target))
+		}
 	}
 
 	_initaliseItem(pItem) {
