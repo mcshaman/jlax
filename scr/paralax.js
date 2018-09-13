@@ -96,12 +96,12 @@ export default class Paralax {
 
 		viewPort.addEventListener('scroll', this._scrollHandler)
 
-		if (this._viewPort === window) {
+		if (viewPort === window) {
 			this._viewPortHeight = window.innerHeight
 		} else {
 			this._viewPortHeight = viewPort.clientHeight
 
-			viewPort.style.overflow = 'scroll'
+			viewPort.style.overflowY = 'scroll'
 			viewPort.style.position = 'relative'
 		}
 
@@ -127,7 +127,7 @@ export default class Paralax {
 
 		if (viewPort !== document) {
 			viewPort.style.position = ''
-			viewPort.style.overflow = ''
+			viewPort.style.overflowY = ''
 		}
 
 		this._viewPort.removeEventListener('scroll', this._scrollHandler)
