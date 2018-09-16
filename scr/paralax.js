@@ -43,8 +43,6 @@ export default class Paralax {
 		} else {
 			element.style.backgroundSize = `auto ${pItem.coverHeight}px`
 		}
-		
-		
 
 		const elementTop = element.offsetTop
 		pItem.scrollEntry = elementTop - this._viewPortHeight
@@ -126,7 +124,7 @@ export default class Paralax {
 	deinitialise() {
 		const viewPort = this._viewPort
 
-		if (viewPort !== document) {
+		if (viewPort !== window) {
 			viewPort.style.position = ''
 			viewPort.style.overflowY = ''
 		}
@@ -134,8 +132,8 @@ export default class Paralax {
 		this._viewPort.removeEventListener('scroll', this._scrollHandler)
 
 		this._items.forEach(pItem => {
-			pItem.style.backgroundSize = ''
-			pItem.style.backgroundPositionY = ''
+			pItem.element.style.backgroundSize = ''
+			pItem.element.style.backgroundPositionY = ''
 		})
 
 		this._items = []
