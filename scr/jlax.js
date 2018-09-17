@@ -1,10 +1,10 @@
 const DEFAULT_OPTIONS = {
 	viewPort: document,
-	className: 'paralax',
+	className: 'jlax',
 	speed: 1,
 }
 
-export default class Paralax {
+export default class JLax {
 	constructor(pOptions) {
 		const options = Object.assign({}, DEFAULT_OPTIONS, pOptions)
 

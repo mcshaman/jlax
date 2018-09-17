@@ -1,5 +1,5 @@
 {
-	"name": "jlax",
+	"name": "jLax",
 	"description": "Simple vertical scrolling parallax effect",
 	"version": "1.0.0",
 	"main": "scr/jlax.js",
