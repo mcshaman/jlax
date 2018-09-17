@@ -1,15 +1,16 @@
 {
-	"name": "paralax",
+	"name": "jlax",
+	"description": "Simple vertical scrolling parallax effect",
 	"version": "1.0.0",
-	"main": "scr/paralax.js",
-	"keywords": [],
-	"author": "",
+	"main": "scr/jlax.js",
+	"keywords": ["paralax"],
+	"author": "McShaman",
 	"license": "ISC",
 	"devDependencies": {
 		"eslint": "^5.5.0"
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://mcshmn@bitbucket.org/mcshmn/paralax.git"
+		"url": "git+https://github.com/mcshaman/jlax.git"
 	}
 }
