@@ -3,7 +3,7 @@
 	"description": "Simple vertical scrolling parallax effect",
 	"scripts": {
 		"dev": "node --experimental-modules env/run.mjs --task=serve",
-		"build": "node --experimental-modules env/run.mjs"
+		"build": "NODE_ENV=production node --experimental-modules env/run.mjs"
 	},
 	"version": "1.0.0",
 	"main": "src/jlax.js",
