@@ -14,9 +14,8 @@
 		}
 
 		#scroller {
-			width: 600px;
-			height: 400px;
-			resize: both;
+			width: 500px;
+			height: 700px;
 		}
 
 		.jlax {
@@ -52,22 +51,15 @@
 		<div class="jlax">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Incidunt cumque, voluptates aspernatur voluptas laboriosam, fugit nam itaque quidem cupiditate molestias nesciunt, obcaecati placeat expedita perferendis minima optio illum dolores nulla.</div>
 		<div class="jlax">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquid eos vero velit sequi expedita quibusdam eius eveniet reprehenderit nobis dolores magnam, ipsa culpa debitis, corporis labore odio impedit cumque? Ex.</div>
 	</div>
-	<button>Reinitalise</button>
+	<script src="/jlax.js"></script>
 	<script type="module">
-		import JLax from '../scr/jlax.js'
-
 		const options = {
 			viewPort: document.getElementById('scroller'),
-			speed: 2,
+			speed: 1.5,
 		}
 
 		const jLax = new JLax(options)
 		jLax.initalise()
-
-		document.getElementsByTagName('button')[0].addEventListener('click', () => {
-			jLax.deinitialise()
-			jLax.initalise()
-		})
 	</script>
 </body>
 </html>

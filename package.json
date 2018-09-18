@@ -1,16 +1,33 @@
 {
-	"name": "jLax",
+	"name": "jlax",
 	"description": "Simple vertical scrolling parallax effect",
+	"scripts": {
+		"dev": "node --experimental-modules env/run.mjs --task=serve",
+		"build": "node --experimental-modules env/run.mjs"
+	},
 	"version": "1.0.0",
-	"main": "scr/jlax.js",
-	"keywords": ["paralax"],
+	"main": "src/jlax.js",
+	"keywords": [
+		"paralax"
+	],
 	"author": "McShaman",
 	"license": "ISC",
 	"devDependencies": {
-		"eslint": "^5.5.0"
+		"@babel/core": "^7.0.1",
+		"@babel/preset-env": "^7.0.0",
+		"babel-preset-minify": "^0.4.3",
+		"del": "^3.0.0",
+		"eslint": "^5.5.0",
+		"express": "^4.16.3",
+		"http-errors": "^1.7.1",
+		"minimist": "^1.2.0",
+		"rollup": "^0.66.0"
 	},
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/mcshaman/jlax.git"
+	},
+	"dependencies": {
+		"capped": "git+https://github.com/mcshaman/capped.git"
 	}
 }
