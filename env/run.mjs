@@ -46,7 +46,6 @@ const tasks = {
 
 		if (production) {
 			options.destination = BUILD_DIRECTORY
-			options.sourcemap = true
 		}
 
 		return promiseProcessJs(inputPath, options)
