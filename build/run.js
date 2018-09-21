@@ -1,16 +1,16 @@
 /*eslint no-console: 0*/
+const root = require('app-root-path').toString()
+const path = require('path')
+const minimist = require('minimist')
+const del = require('del')
+const express = require('express')
+const createError = require('http-errors')
+const promiseProcessJs = require(path.resolve(root, 'lib/promiseProcessJs'))
+const promiesLogResults = require(path.resolve(root, 'lib/promiseLogResults'))
 
-import path from 'path'
-import minimist from 'minimist'
-import del from 'del'
-import express from 'express'
-import createError from 'http-errors'
-import promiseProcessJs from './modules/promiseProcessJs'
-import promiesLogResults from './modules/promiseLogResults'
-
-const BUILD_DIRECTORY = 'build'
-const TEST_DIRECTORY = 'test'
-const SOURCE_DIRECTORY = 'src'
+const BUILD_DIRECTORY = 'dist'
+const EXAMPLES_DIRECTORY = 'examples'
+const SOURCE_DIRECTORY = 'lib'
 const ENTRY_POINT = 'jlax.js'
 const GLOBAL_NAME = 'JLax'
 const SERVER_PORT = 5000
@@ -66,7 +66,7 @@ const tasks = {
 				})
 		})
 
-		server.use(express.static(path.resolve(TEST_DIRECTORY)))
+		server.use(express.static(path.resolve(EXAMPLES_DIRECTORY)))
 
 		// catch 404 and forward to error handler
 		server.use((pRequest, pResponse, pNext) => {
