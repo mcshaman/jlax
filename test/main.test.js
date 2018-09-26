@@ -29,7 +29,7 @@ beforeEach(async () => {
 })
 
 afterEach(async () => {
-	page.close()
+	await page.close()
 })
 
 afterAll(async () => {
@@ -39,8 +39,7 @@ afterAll(async () => {
 
 test('event listener', async () => {
 	await page.evaluate(() => {
-		const jLax = new JLax()
-		jLax.initalise()
+		const jLax = (new JLax()).initalise()
 	})
 
 	const client = await page.target().createCDPSession()
@@ -69,7 +68,6 @@ test('evaluate background images', async pDone => {
 
 		observer.observe(element, {attributes: true})
 
-		const jLax = new JLax()
-		jLax.initalise()
+		const jLax = (new JLax()).initalise()
 	})
 })
