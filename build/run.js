@@ -38,6 +38,8 @@ const tasks = {
 			})
 	},
 
+	// To Do: move function out into its own module that can return the data for piping into express server response
+	// To Do: detect if called from CLI e.g. const cli = require.main === module
 	js: function () {
 		const inputPath = path.join(SOURCE_DIRECTORY, ENTRY_POINT)
 		const options = {
@@ -52,6 +54,7 @@ const tasks = {
 			.then(promiesLogResults)
 	},
 
+	// To Do: move function ot into its own module so that it can be called for development, unit testing and examples
 	serve: function () {
 		const server = express()
 
